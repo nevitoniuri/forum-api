@@ -7,6 +7,7 @@ import lombok.Getter;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Getter
@@ -27,10 +28,15 @@ public class TopicoDetalhadoDTO {
         this.mensagem = topico.getMensagem();
         this.dataCriacao = topico.getDataCriacao();
         this.status = topico.getStatus();
-        this.nomeAutor = topico.getAutor().getNome();
+
+        if (Objects.isNull(topico.getAutor())) {
+            this.nomeAutor = "Aluno";
+        } else {
+            this.nomeAutor = topico.getAutor().getNome();
+        }
+
         this.respostas = new ArrayList<>();
         this.respostas.addAll(topico.getRespostas().stream().map(RespostaDTO::new).collect(Collectors.toList()));
-
     }
 
 }

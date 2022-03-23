@@ -2,7 +2,8 @@ package br.com.alura.forum.controller;
 
 import br.com.alura.forum.controller.dto.TopicoDTO;
 import br.com.alura.forum.controller.dto.TopicoDetalhadoDTO;
-import br.com.alura.forum.controller.form.TopicoForm;
+import br.com.alura.forum.controller.form.TopicoFormAtualizar;
+import br.com.alura.forum.controller.form.TopicoFormCadastrar;
 import br.com.alura.forum.model.Topico;
 import br.com.alura.forum.repository.CursoRepository;
 import br.com.alura.forum.repository.TopicoRepository;
@@ -26,7 +27,7 @@ public class TopicosController {
     private CursoRepository cursoRepository;
 
     @GetMapping
-    public ResponseEntity<List<TopicoDTO>> lista(String nomeCurso) {
+    public ResponseEntity<List<TopicoDTO>> listar(String nomeCurso) {
 
         List<Topico> topicos;
         if (nomeCurso == null) {
@@ -39,10 +40,10 @@ public class TopicosController {
     }
 
     @PostMapping
-    public ResponseEntity<TopicoDTO> cadastrar(@RequestBody @Valid TopicoForm form,
+    public ResponseEntity<TopicoDTO> cadastrar(@RequestBody @Valid TopicoFormCadastrar topicoFormCadastrar,
                                                UriComponentsBuilder uriComponentsBuilder) {
 
-        Topico topico = form.toTopico(cursoRepository);
+        Topico topico = topicoFormCadastrar.toTopico(cursoRepository);
         topicoRepository.save(topico);
         URI uri = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
 
@@ -55,4 +56,19 @@ public class TopicosController {
 
         return ResponseEntity.ok(new TopicoDetalhadoDTO(topico));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TopicoDTO> atualizar(@PathVariable Long id,
+                                               @RequestBody @Valid TopicoFormAtualizar topicoFormAtualizar) {
+
+        Topico topico = topicoRepository.getById(id);
+        topico.setTitulo(topicoFormAtualizar.getTitulo());
+        topico.setMensagem(topicoFormAtualizar.getMensagem());
+
+        Topico topicoAtualizado = topicoRepository.saveAndFlush(topico);
+
+        return ResponseEntity.ok(new TopicoDTO(topicoAtualizado));
+    }
+
+
 }
