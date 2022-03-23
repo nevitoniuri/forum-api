@@ -50,9 +50,9 @@ public class TopicosController {
     }
 
     @GetMapping("/{id}")
-    public TopicoDetalhadoDTO detalhar(@PathVariable Long id) {
-        Topico topico = topicoRepository.getOne(id);
+    public ResponseEntity<TopicoDetalhadoDTO> detalhar(@PathVariable Long id) {
+        Topico topico = topicoRepository.getById(id);
 
-        return new TopicoDetalhadoDTO(topico);
+        return ResponseEntity.ok(new TopicoDetalhadoDTO(topico));
     }
 }
