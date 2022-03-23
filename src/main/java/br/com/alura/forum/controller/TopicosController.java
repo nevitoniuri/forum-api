@@ -15,6 +15,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/topicos")
@@ -52,23 +53,46 @@ public class TopicosController {
 
     @GetMapping("/{id}")
     public ResponseEntity<TopicoDetalhadoDTO> detalhar(@PathVariable Long id) {
-        Topico topico = topicoRepository.getById(id);
+        Optional<Topico> topicoBuscado = topicoRepository.findById(id);
 
-        return ResponseEntity.ok(new TopicoDetalhadoDTO(topico));
+        if (topicoBuscado.isPresent()) {
+            return ResponseEntity.ok(new TopicoDetalhadoDTO(topicoBuscado.get()));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TopicoDTO> atualizar(@PathVariable Long id,
                                                @RequestBody @Valid TopicoFormAtualizar topicoFormAtualizar) {
 
-        Topico topico = topicoRepository.getById(id);
-        topico.setTitulo(topicoFormAtualizar.getTitulo());
-        topico.setMensagem(topicoFormAtualizar.getMensagem());
+        Optional<Topico> topicoBuscado = topicoRepository.findById(id);
 
-        Topico topicoAtualizado = topicoRepository.saveAndFlush(topico);
+        if (topicoBuscado.isPresent()) {
+            topicoBuscado.get().setTitulo(topicoFormAtualizar.getTitulo());
+            topicoBuscado.get().setMensagem(topicoFormAtualizar.getMensagem());
 
-        return ResponseEntity.ok(new TopicoDTO(topicoAtualizado));
+            Topico topicoAtualizado = topicoRepository.saveAndFlush(topicoBuscado.get());
+            return ResponseEntity.ok(new TopicoDTO(topicoAtualizado));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> remover(@PathVariable Long id) {
+
+        Optional<Topico> topicoBuscado = topicoRepository.findById(id);
+
+        if (topicoBuscado.isPresent()) {
+            topicoRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
 
 }
