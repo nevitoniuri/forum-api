@@ -9,6 +9,9 @@ import br.com.alura.forum.repository.TopicoRepository;
 import br.com.alura.forum.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -29,9 +32,9 @@ public class TopicosController {
 
     @GetMapping
     public ResponseEntity<Page<TopicoDTO>> listarTopicos(@RequestParam(required = false) String nomeCurso,
-                                                         @RequestParam int pagina, @RequestParam int qtd,
-                                                         @RequestParam String ordenacao) {
-        return ResponseEntity.ok(topicoService.listarTopicos(nomeCurso, pagina, qtd, ordenacao));
+                                                         @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC)
+                                                                 Pageable paginacao) {
+        return ResponseEntity.ok(topicoService.listarTopicos(nomeCurso, paginacao));
     }
 
     @PostMapping
@@ -70,7 +73,6 @@ public class TopicosController {
             return ResponseEntity.notFound().build();
         }
     }
-
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> removerTopico(@PathVariable Long id) {

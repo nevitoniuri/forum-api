@@ -23,11 +23,10 @@ public class TopicoService {
     @Autowired
     private CursoRepository cursoRepository;
 
-    public Page<TopicoDTO> listarTopicos(String nomeCurso, int pagina, int qtd, String ordenacao) {
-
-        Pageable paginacao = PageRequest.of(pagina, qtd, Sort.Direction.ASC, ordenacao);
+    public Page<TopicoDTO> listarTopicos(String nomeCurso, Pageable paginacao) {
 
         Page<Topico> topicos;
+
         if (nomeCurso == null) {
             topicos = topicoRepository.findAll(paginacao);
         } else {
