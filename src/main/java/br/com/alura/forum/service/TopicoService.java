@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -23,9 +23,9 @@ public class TopicoService {
     @Autowired
     private CursoRepository cursoRepository;
 
-    public Page<TopicoDTO> listarTopicos(String nomeCurso, int pagina, int qtd) {
+    public Page<TopicoDTO> listarTopicos(String nomeCurso, int pagina, int qtd, String ordenacao) {
 
-        Pageable paginacao = PageRequest.of(pagina, qtd);
+        Pageable paginacao = PageRequest.of(pagina, qtd, Sort.Direction.ASC, ordenacao);
 
         Page<Topico> topicos;
         if (nomeCurso == null) {

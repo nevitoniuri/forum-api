@@ -29,9 +29,9 @@ public class TopicosController {
 
     @GetMapping
     public ResponseEntity<Page<TopicoDTO>> listarTopicos(@RequestParam(required = false) String nomeCurso,
-                                                         @RequestParam int pagina,
-                                                         @RequestParam int qtd) {
-        return ResponseEntity.ok(topicoService.listarTopicos(nomeCurso, pagina, qtd));
+                                                         @RequestParam int pagina, @RequestParam int qtd,
+                                                         @RequestParam String ordenacao) {
+        return ResponseEntity.ok(topicoService.listarTopicos(nomeCurso, pagina, qtd, ordenacao));
     }
 
     @PostMapping
