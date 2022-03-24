@@ -5,16 +5,16 @@ import br.com.alura.forum.controller.dto.TopicoDetalhadoDTO;
 import br.com.alura.forum.controller.form.TopicoFormAtualizar;
 import br.com.alura.forum.controller.form.TopicoFormCadastrar;
 import br.com.alura.forum.model.Topico;
-import br.com.alura.forum.repository.CursoRepository;
 import br.com.alura.forum.repository.TopicoRepository;
+import br.com.alura.forum.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -25,47 +25,38 @@ public class TopicosController {
     private TopicoRepository topicoRepository;
 
     @Autowired
-    private CursoRepository cursoRepository;
+    private TopicoService topicoService;
 
     @GetMapping
-    public ResponseEntity<List<TopicoDTO>> listar(String nomeCurso) {
-
-        List<Topico> topicos;
-        if (nomeCurso == null) {
-            topicos = topicoRepository.findAll();
-        } else {
-            topicos = topicoRepository.findByCursoNome(nomeCurso);
-        }
-
-        return ResponseEntity.ok(TopicoDTO.toDTO(topicos));
+    public ResponseEntity<Page<TopicoDTO>> listarTopicos(@RequestParam(required = false) String nomeCurso,
+                                                         @RequestParam int pagina,
+                                                         @RequestParam int qtd) {
+        return ResponseEntity.ok(topicoService.listarTopicos(nomeCurso, pagina, qtd));
     }
 
     @PostMapping
-    public ResponseEntity<TopicoDTO> cadastrar(@RequestBody @Valid TopicoFormCadastrar topicoFormCadastrar,
-                                               UriComponentsBuilder uriComponentsBuilder) {
-
-        Topico topico = topicoFormCadastrar.toTopico(cursoRepository);
-        topicoRepository.save(topico);
+    public ResponseEntity<TopicoDTO> cadastrarTopico(@RequestBody @Valid TopicoFormCadastrar topicoFormCadastrar,
+                                                     UriComponentsBuilder uriComponentsBuilder) {
+        Topico topico = topicoService.cadastrarTopico(topicoFormCadastrar);
         URI uri = uriComponentsBuilder.path("/topicos/{id}").buildAndExpand(topico.getId()).toUri();
-
         return ResponseEntity.created(uri).body(new TopicoDTO(topico));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TopicoDetalhadoDTO> detalhar(@PathVariable Long id) {
-        Optional<Topico> topicoBuscado = topicoRepository.findById(id);
+    public ResponseEntity<TopicoDetalhadoDTO> detalharTopico(@PathVariable Long id) {
 
-        if (topicoBuscado.isPresent()) {
-            return ResponseEntity.ok(new TopicoDetalhadoDTO(topicoBuscado.get()));
-        } else {
+        Optional<Topico> topicoBuscado = topicoService.detalharTopico(id);
+
+        if (topicoBuscado.isEmpty()) {
             return ResponseEntity.notFound().build();
+        } else {
+            return ResponseEntity.ok(new TopicoDetalhadoDTO(topicoBuscado.get()));
         }
-
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TopicoDTO> atualizar(@PathVariable Long id,
-                                               @RequestBody @Valid TopicoFormAtualizar topicoFormAtualizar) {
+    public ResponseEntity<TopicoDTO> atualizarTopico(@PathVariable Long id,
+                                                     @RequestBody @Valid TopicoFormAtualizar topicoFormAtualizar) {
 
         Optional<Topico> topicoBuscado = topicoRepository.findById(id);
 
@@ -82,7 +73,7 @@ public class TopicosController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> remover(@PathVariable Long id) {
+    public ResponseEntity<?> removerTopico(@PathVariable Long id) {
 
         Optional<Topico> topicoBuscado = topicoRepository.findById(id);
 
