@@ -8,6 +8,8 @@ import br.com.alura.forum.model.Topico;
 import br.com.alura.forum.repository.TopicoRepository;
 import br.com.alura.forum.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -31,13 +33,15 @@ public class TopicosController {
     private TopicoService topicoService;
 
     @GetMapping
+    @Cacheable(value = "listaTopicos")
     public ResponseEntity<Page<TopicoDTO>> listarTopicos(@RequestParam(required = false) String nomeCurso,
-                                                         @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.ASC)
+                                                         @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
                                                                  Pageable paginacao) {
         return ResponseEntity.ok(topicoService.listarTopicos(nomeCurso, paginacao));
     }
 
     @PostMapping
+    @CacheEvict(value = "listaTopicos", allEntries = true)
     public ResponseEntity<TopicoDTO> cadastrarTopico(@RequestBody @Valid TopicoFormCadastrar topicoFormCadastrar,
                                                      UriComponentsBuilder uriComponentsBuilder) {
         Topico topico = topicoService.cadastrarTopico(topicoFormCadastrar);
@@ -58,6 +62,7 @@ public class TopicosController {
     }
 
     @PutMapping("/{id}")
+    @CacheEvict(value = "listaTopicos", allEntries = true)
     public ResponseEntity<TopicoDTO> atualizarTopico(@PathVariable Long id,
                                                      @RequestBody @Valid TopicoFormAtualizar topicoFormAtualizar) {
 
@@ -75,6 +80,7 @@ public class TopicosController {
     }
 
     @DeleteMapping("/{id}")
+    @CacheEvict(value = "listaTopicos", allEntries = true)
     public ResponseEntity<?> removerTopico(@PathVariable Long id) {
 
         Optional<Topico> topicoBuscado = topicoRepository.findById(id);
