@@ -35,7 +35,8 @@ public class TopicosController {
     @GetMapping
     @Cacheable(value = "listaTopicos")
     public ResponseEntity<Page<TopicoDTO>> listarTopicos(@RequestParam(required = false) String nomeCurso,
-                                                         @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
+                                                         @PageableDefault(page = 0, size = 10, sort = "id",
+                                                                 direction = Sort.Direction.DESC)
                                                                  Pageable paginacao) {
         return ResponseEntity.ok(topicoService.listarTopicos(nomeCurso, paginacao));
     }
