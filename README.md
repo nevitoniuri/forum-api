@@ -30,6 +30,7 @@ interagir com os tópicos (CRUD).
 | `PUT`       | 200 OK         | 400 BAD_REQUEST / 404 NOT_FOUND       |
 | `DELETE`    | 204 NO_CONTENT | 400 BAD_REQUEST / 404 NOT_FOUND       |
 
+* Nessa API, apenas os métodos GET são públicos. Para o resto, é necessário o usuário enviar o Bearer Token para ter acesso aos endpoints. 
 
 ### Autenticar Usuário
 #### `POST` /auth
@@ -43,17 +44,37 @@ interagir com os tópicos (CRUD).
 
 ###  Listar Tópicos
 ####`GET`/topicos
-    Retorna uma lista com todos os tópicos no banco de dados.
+* Retorna uma lista com todos os tópicos no banco de dados.
+* Response:
+  ```json
+  {
+    "id": "id do tópico",
+    "titulo": "Título do Tópico",
+    "mensagem": "Descrição do Tópico",
+    "dataCriacao": "Data em que foi criado o Tópico"
+  }
+  ```
 
 ###  Detalhar Tópico
 ####`GET`/topicos/{id}
-    Busca no banco de dados o objeto com o id passado na URL.
+* Busca no banco de dados o objeto com o id passado na URL.
+* Response:
+  ```json
+    {
+      "id": "id do tópico",
+      "titulo": "Título do Tópico",
+      "mensagem": "Descrição do Tópico",
+      "dataCriacao": "Data em que foi criado o Tópico",
+      "status": "Status do Tópico",
+      "nomeAutor": "Autor do Tópico",
+      "respostas": "Lista de Respostas associadas ao tópico"
+    }
+  ```
 
 ### Postar Tópico
 ####`POST`/topicos/{id}
-    Cadastra um novo tópico no banco de dados.
-
-Request Body:
+* Cria um novo registro de tópico no banco de dados.
+* Request Body
   ```json
   {
     "titulo": "Problema X",
@@ -61,3 +82,18 @@ Request Body:
     "nomeCurso": "Spring Boot"
   }
   ```
+
+### Atualizar Tópico
+####`PUT`/topicos/{id}
+* Atualiza dados de um registro ou altera sua situação.
+* Request Body
+  ```json
+  {
+    "titulo": "Problema Y",
+    "mensagem": "Estou com o problema Y"
+  }
+  ```
+  
+### Deletar Tópico
+####`DELETE`/topicos/{id}
+* Remove um registro do sistema.
