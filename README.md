@@ -1,4 +1,4 @@
-##Forum-API
+## Forum-API
 Projeto de API REST desenvolvido com os conceitos aprendidos durante a Formação Spring da Alura.
 ## Descrição do Projeto
 A API representa um fórum, sendo possível, através de endpoints, o usuário se autenticar e 
