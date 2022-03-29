@@ -7,12 +7,16 @@ interagir com os tópicos (CRUD).
 ## O que aprendi
 - Boas práticas do modelo REST
 - Validação de campos no cadastro de Tópicos com Bean Validation e ExceptionHandler
-- Filtros, Paginação e ordenação ao trazer a lista de Tópicos do banco
+- Implementar filtros, Paginação e ordenação ao trazer a lista de Tópicos do banco
 - Implementar Cache em métodos Controller para melhorar a performance
-- Realizar autenticação via JWT para controle de acesso aos endpoints
-- Utilizar o formulário de Autenticação do Spring
+- Realizar autenticação via JWT para autenticação
+- Limitar o acesso dos endpoints a certos perfis de usuário
 - Monitoramento com Actuator e Spring Boot Admin
 - Documentação de API REST com Swagger e Springfox
+- Criar testes automatizados
+- Configurar ambientes de desenvolvimento
+- Realizar build e Deploy
+- Docker
 
 ## O que utilizei
 - Spring Boot
