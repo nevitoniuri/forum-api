@@ -11,11 +11,12 @@ interagir com os tópicos (CRUD).
 - Implementar Cache em métodos Controller para melhorar a performance
 - Realizar autenticação via JWT para controle de acesso aos endpoints
 - Utilizar o formulário de Autenticação do Spring
-- Monitoramento com Actuator
+- Monitoramento com Actuator e Spring Boot Admin
+- Documentação de API REST com Swagger e Springfox
 
 ## O que utilizei
 - Spring Boot
-- Spring Data JPA para Persistencia de dados em banco de dados H2
+- Spring Data JPA para persistência de dados em banco de dados H2
 - Spring Security com JWT (stateless)
 
 ## Documentação
