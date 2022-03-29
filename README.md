@@ -43,7 +43,7 @@ interagir com os tópicos (CRUD).
   ```
 
 ###  Listar Tópicos
-####`GET`/topicos
+#### `GET`/topicos
 * Retorna uma lista com todos os tópicos no banco de dados.
 * Response:
   ```json
@@ -56,7 +56,7 @@ interagir com os tópicos (CRUD).
   ```
 
 ###  Detalhar Tópico
-####`GET`/topicos/{id}
+#### `GET`/topicos/{id}
 * Busca no banco de dados o objeto com o id passado na URL.
 * Response:
   ```json
@@ -72,7 +72,7 @@ interagir com os tópicos (CRUD).
   ```
 
 ### Postar Tópico
-####`POST`/topicos/{id}
+#### `POST`/topicos/{id}
 * Cria um novo registro de tópico no banco de dados.
 * Request Body
   ```json
@@ -84,7 +84,7 @@ interagir com os tópicos (CRUD).
   ```
 
 ### Atualizar Tópico
-####`PUT`/topicos/{id}
+#### `PUT`/topicos/{id}
 * Atualiza dados de um registro ou altera sua situação.
 * Request Body
   ```json
@@ -95,5 +95,5 @@ interagir com os tópicos (CRUD).
   ```
   
 ### Deletar Tópico
-####`DELETE`/topicos/{id}
+#### `DELETE`/topicos/{id}
 * Remove um registro do sistema.
