@@ -19,7 +19,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/auth")
-@Profile("prod")
+@Profile(value = {"prod", "test"})
 public class AutenticacaoController {
 
     @Autowired
@@ -31,10 +31,12 @@ public class AutenticacaoController {
     @PostMapping
     public ResponseEntity<TokenDTO> autenticar(@RequestBody @Valid LoginForm loginForm) {
 
-        UsernamePasswordAuthenticationToken dadosLogin = loginForm.converter();
-
         try {
-            Authentication authentication = authManager.authenticate(dadosLogin);
+            Authentication authentication = authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            loginForm.getEmail(), loginForm.getSenha()
+                    )
+            );
             String token = tokenService.gerarToken(authentication);
             return ResponseEntity.ok(new TokenDTO(token, "Bearer"));
         } catch (AuthenticationException authenticationException) {

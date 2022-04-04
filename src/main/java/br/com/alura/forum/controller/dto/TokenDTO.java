@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 public class TokenDTO {
-    private String token;
-    private String tipo;
+    private final String token;
+    private final String tipo;
 
-    public TokenDTO(String token, String bearer) {
+    public TokenDTO(String token, String tipo) {
         this.token = token;
-        this.tipo = bearer;
+        this.tipo = tipo;
     }
 }

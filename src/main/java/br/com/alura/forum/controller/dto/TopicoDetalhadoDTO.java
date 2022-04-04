@@ -13,13 +13,13 @@ import java.util.stream.Collectors;
 @Getter
 public class TopicoDetalhadoDTO {
 
-    private Long id;
-    private String titulo;
-    private String mensagem;
-    private LocalDateTime dataCriacao;
-    private StatusTopico status;
-    private String nomeAutor;
-    private List<RespostaDTO> respostas;
+    private final Long id;
+    private final String titulo;
+    private final String mensagem;
+    private final LocalDateTime dataCriacao;
+    private final StatusTopico status;
+    private final String nomeAutor;
+    private final List<RespostaDTO> respostas;
 
 
     public TopicoDetalhadoDTO(Topico topico) {
